@@ -146,6 +146,7 @@ This takes about **1–2 minutes**.
 After deployment, Netlify gives you a URL like:
 ```
 https://random-name-123abc.netlify.app
+https://sayali-jt.netlify.app
 ```
 
 ### Change to a custom name:

@@ -95,8 +95,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: background .3s, backdrop-filter .3s, border-color .3s;
 }
 .navbar.scrolled {
-  background: rgba(3, 2, 13, .85);
+  background: rgba(3, 2, 13, .92);
   backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border-bottom: 1px solid var(--border);
 }
 .nav-brand {
@@ -107,8 +108,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  position: relative;
+  z-index: 201;
+  flex-shrink: 0;
 }
-.nav-links { list-style: none; display: flex; gap: 2rem; }
+.nav-links { list-style: none; display: flex; gap: 2rem; align-items: center; }
 .nav-links a {
   font-size: .8rem;
   font-weight: 500;
@@ -134,10 +138,30 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border: 1px solid rgba(0, 229, 200, .3);
   padding: .28rem .9rem;
   border-radius: 100px;
+  white-space: nowrap;
 }
 .nav-github::after { display: none !important; }
-.hamburger { display: none; flex-direction: column; gap: 5px; padding: 4px; }
-.hamburger span { display: block; width: 24px; height: 2px; background: var(--text); border-radius: 2px; transition: .3s; }
+
+/* Hamburger button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  padding: 8px;
+  cursor: pointer;
+  position: relative;
+  z-index: 201;
+  background: transparent;
+  border: none;
+}
+.hamburger span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: var(--text);
+  border-radius: 2px;
+  transition: transform .3s, opacity .3s;
+}
 
 /* ===================== HERO ===================== */
 .hero {
@@ -174,6 +198,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   background: var(--teal);
   border-radius: 50%;
   animation: pulse 2s infinite;
+  flex-shrink: 0;
 }
 @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(1.5)} }
 
@@ -230,6 +255,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   letter-spacing: .04em;
   transition: .25s;
   position: relative;
+  display: inline-block;
 }
 .btn-glow:hover {
   transform: translateY(-2px);
@@ -242,6 +268,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border-radius: 100px;
   font-size: .88rem;
   transition: .25s;
+  display: inline-block;
 }
 .btn-outline:hover { border-color: var(--violet); color: var(--lavender); }
 
@@ -322,6 +349,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   background: rgba(10, 8, 50, .85);
   border: 1px solid var(--border);
   backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-radius: 12px;
   padding: .5rem .9rem;
   font-size: .75rem;
@@ -447,16 +475,9 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   color: var(--muted);
   cursor: default;
   transition: color .2s, transform .2s;
-
-  /* Hexagon via clip-path */
   clip-path: polygon(12% 0%, 88% 0%, 100% 50%, 88% 100%, 12% 100%, 0% 50%);
   background: rgba(255,255,255,.06);
-
-  /* fake border via box-shadow won't show through clip-path,
-     so we use a pseudo-element layered behind */
 }
-
-/* Outer border layer for hexagon */
 .skill-tag::before {
   content: '';
   position: absolute;
@@ -466,14 +487,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   z-index: -1;
   transform: scale(1.06);
 }
-
 .skill-tag:hover {
   color: var(--text);
   background: rgba(157,79,255,.18);
   transform: translateY(-2px) scale(1.04);
 }
-
-/* Currently learning tags — teal accent */
 .skill-tag.learning-tag {
   color: var(--teal);
   background: rgba(0,229,200,.12);
@@ -506,13 +524,8 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   transition: opacity .4s ease;
   z-index: 0;
 }
-.project-card:hover .cloud-deco {
-  opacity: 1;
-}
-/* also show cloud when card becomes visible */
-.project-card.visible .cloud-deco {
-  opacity: 0.7;
-}
+.project-card:hover .cloud-deco { opacity: 1; }
+.project-card.visible .cloud-deco { opacity: 0.7; }
 
 .project-card {
   background: var(--surface);
@@ -533,8 +546,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .project-card:hover {
   box-shadow: 0 12px 50px rgba(0,0,0,.5), 0 0 30px rgba(157,79,255,.08);
 }
-
-/* ensure card content sits above cloud SVG */
 .project-card > *:not(.cloud-deco) { position: relative; z-index: 1; }
 
 .project-card-header {
@@ -558,8 +569,6 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-size: .68rem;
   color: var(--muted);
 }
-
-/* ── Ongoing badge ── */
 .ongoing-badge {
   display: inline-flex;
   align-items: center;
@@ -706,17 +715,19 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border: 1px solid var(--border);
   border-radius: var(--radius);
   overflow: hidden;
-  max-width: 560px;
+  max-width: 600px;
+  width: 100%;
 }
 .contact-item {
   display: flex;
   align-items: center;
-  gap: 1.2rem;
-  padding: 1.2rem 1.6rem;
+  gap: 1rem;
+  padding: 1.1rem 1.4rem;
   border-bottom: 1px solid var(--border);
   transition: background .2s;
   width: 100%;
   text-align: left;
+  min-width: 0; /* allow shrinking */
 }
 .contact-item:last-child { border-bottom: none; }
 .contact-item:hover:not(.no-hover) { background: rgba(255,255,255,.03); }
@@ -728,9 +739,28 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   font-size: 1.1rem;
   flex-shrink: 0;
 }
-.contact-info { display: flex; flex-direction: column; flex: 1; }
-.contact-label { font-size: .68rem; color: var(--muted); text-transform: uppercase; letter-spacing: .08em; }
-.contact-value { font-size: .88rem; color: var(--text); margin-top: .1rem; }
+.contact-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0; /* allow text truncation */
+  overflow: hidden;
+}
+.contact-label {
+  font-size: .68rem;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  white-space: nowrap;
+}
+.contact-value {
+  font-size: .85rem;
+  color: var(--text);
+  margin-top: .1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 .contact-action {
   font-size: .76rem;
   font-weight: 600;
@@ -740,6 +770,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   border-radius: 100px;
   transition: background .2s;
   white-space: nowrap;
+  flex-shrink: 0;
 }
 .contact-item:hover .contact-action { background: rgba(0,229,200,.1); }
 
@@ -758,36 +789,146 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .footer strong { color: var(--text); }
 .footer-year { font-family: var(--ff-mono); }
 
-/* ===================== RESPONSIVE ===================== */
+/* ===================== RESPONSIVE — TABLET 1024px ===================== */
+@media (max-width: 1024px) {
+  .navbar { padding: 1rem 2rem; }
+  .hero { padding: 6rem 2rem 3rem; gap: 3rem; }
+  .avatar-wrap { width: 220px; height: 220px; }
+  .ft2 { right: -20px; }
+}
+
+/* ===================== RESPONSIVE — MOBILE 768px ===================== */
 @media (max-width: 768px) {
-  .navbar { padding: 1rem 1.5rem; }
+  /* ── Navbar ── */
+  .navbar {
+    padding: 1rem 1.25rem;
+    background: rgba(3, 2, 13, .95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
   .hamburger { display: flex; }
+
+  /* Mobile fullscreen menu */
   .nav-links {
-    display: none;
+    display: flex;
     position: fixed;
     top: 0; left: 0; right: 0; bottom: 0;
-    background: var(--cosmos);
+    background: rgba(3, 2, 13, .98);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2.5rem;
-    z-index: 199;
+    gap: 2rem;
+    z-index: 200;
+    /* Hidden by default */
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(-10px);
+    transition: opacity .3s ease, transform .3s ease;
   }
-  .nav-links.open { display: flex; }
-  .nav-links a { font-size: 1.2rem; }
+  .nav-links.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateY(0);
+  }
+  .nav-links a {
+    font-size: 1.1rem;
+    color: var(--text);
+  }
+  .nav-github {
+    font-size: 1rem !important;
+    padding: .5rem 1.5rem;
+  }
+
+  /* ── Hero ── */
   .hero {
     flex-direction: column-reverse;
     text-align: center;
-    padding: 5rem 1.5rem 3rem;
-    gap: 2.5rem;
+    padding: 5.5rem 1.25rem 3rem;
+    gap: 2rem;
+    min-height: auto;
   }
-  .hero-left { display: flex; flex-direction: column; align-items: center; }
-  .hero-summary { text-align: center; }
+  .hero-left {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  .hero-summary { text-align: center; max-width: 100%; }
   .hero-cta { justify-content: center; }
-  .hero-stats { justify-content: center; }
-  .avatar-wrap { width: 180px; height: 180px; }
-  .section { padding: 5rem 1.5rem; }
-  .projects-grid { grid-template-columns: 1fr; }
+  .hero-stats { justify-content: center; gap: 1.5rem; }
+
+  .avatar-wrap { width: 160px; height: 160px; }
+  .avatar-placeholder { font-size: 3.5rem; }
+
+  /* Floating tags — reposition for mobile */
+  .ft1 { top: -5px; right: -10px; font-size: .65rem; padding: .35rem .65rem; }
+  .ft2 { bottom: 10px; right: -10px; font-size: .65rem; padding: .35rem .65rem; }
+  .ft3 { bottom: -5px; left: -10px; font-size: .65rem; padding: .35rem .65rem; }
+
+  /* ── Sections ── */
+  .section { padding: 4rem 1.25rem; }
+  .section-title { margin-bottom: 2rem; }
+
+  /* ── Skills ── */
   .skills-grid { grid-template-columns: 1fr; }
-  .footer { padding: 1.5rem; flex-direction: column; gap: .5rem; text-align: center; }
+
+  /* ── Projects ── */
+  .projects-grid { grid-template-columns: 1fr; }
+
+  /* ── Roadmap ── */
+  .roadmap::before { left: 20px; }
+  .road-icon { width: 42px; height: 42px; font-size: 1rem; }
+  .road-content { padding: 1rem 1.1rem; }
+
+  /* ── Contact ── */
+  .contact-sub { margin-top: -1.5rem; }
+  .contact-card { max-width: 100%; }
+  .contact-item {
+    padding: .9rem 1rem;
+    gap: .75rem;
+  }
+  .contact-value {
+    font-size: .78rem;
+  }
+  .contact-action {
+    font-size: .68rem;
+    padding: .22rem .6rem;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    padding: 1.5rem 1.25rem;
+    flex-direction: column;
+    gap: .5rem;
+    text-align: center;
+  }
+
+  /* ── Scroll hint hide on mobile ── */
+  .scroll-hint { display: none; }
+}
+
+/* ===================== RESPONSIVE — SMALL MOBILE 480px ===================== */
+@media (max-width: 480px) {
+  .hero-name { font-size: clamp(3rem, 15vw, 4.5rem); }
+  .hero-badge { font-size: .68rem; }
+  .stat-num { font-size: 1.6rem; }
+  .hero-stats { gap: 1rem; }
+
+  .contact-item { padding: .8rem .85rem; gap: .6rem; }
+  .contact-icon { width: 32px; height: 32px; font-size: .95rem; border-radius: 8px; }
+  .contact-value { font-size: .75rem; }
+  .contact-action {
+    font-size: .65rem;
+    padding: .2rem .5rem;
+  }
+
+  .avatar-wrap { width: 140px; height: 140px; }
+  .ft1, .ft2, .ft3 { display: none; } /* hide floating tags on very small screens */
+
+  .road-content h3 { font-size: .9rem; }
+  .road-place { font-size: .75rem; }
 }

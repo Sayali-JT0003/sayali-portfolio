@@ -6,13 +6,11 @@ import "./App.css";
 const skills = [
   { group: "Frontend",   items: ["HTML", "CSS", "JavaScript", "Bootstrap5", "React"] },
   { group: "Backend",    items: ["PHP", "Laravel 9", "MySQL", "MongoDB"] },
-  // { group: "Database",   items: ["MySQL"] },
   { group: "Tools",      items: ["Git", "GitHub", "VS Code", "Xampp", "Postman"] },
   { group: "AI Tools",   items: ["ChatGPT", "Claude AI", "DeepSeek", "Perplexity"] },
   { group: "Soft Skills", items: ["Communication", "Presentation", "Team Collaboration"] },
 ];
 
-// items marked as currently learning
 const learningItems = new Set(["React", "MongoDB"]);
 
 const projects = [
@@ -292,26 +290,55 @@ function useMouseSparkle() {
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+
   useEffect(() => {
     const handler = () => setScrolled(window.scrollY > 40);
     window.addEventListener("scroll", handler);
     return () => window.removeEventListener("scroll", handler);
   }, []);
+
+  // Lock body scroll when menu is open
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
+
   const links = ["About", "Skills", "Projects", "Journey", "Contact"];
+
   return (
     <nav className={`navbar ${scrolled ? "scrolled" : ""}`}>
       <div className="nav-brand">S. Thombare</div>
-      <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)}>
-        <span /><span /><span />
+
+      <button
+        className="hamburger"
+        onClick={() => setMenuOpen(!menuOpen)}
+        aria-label="Toggle navigation"
+        aria-expanded={menuOpen}
+      >
+        <span style={menuOpen ? { transform: "rotate(45deg) translate(5px, 5px)" } : {}} />
+        <span style={menuOpen ? { opacity: 0 } : {}} />
+        <span style={menuOpen ? { transform: "rotate(-45deg) translate(5px, -5px)" } : {}} />
       </button>
+
       <ul className={`nav-links ${menuOpen ? "open" : ""}`}>
         {links.map((l) => (
           <li key={l}>
-            <a href={`#${l.toLowerCase()}`} onClick={() => setMenuOpen(false)}>{l}</a>
+            <a
+              href={`#${l.toLowerCase()}`}
+              onClick={() => setMenuOpen(false)}
+            >
+              {l}
+            </a>
           </li>
         ))}
         <li>
-          <a href="https://github.com/Sayali-JT0003" target="_blank" rel="noopener noreferrer" className="nav-github">
+          <a
+            href="https://github.com/Sayali-JT0003"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nav-github"
+            onClick={() => setMenuOpen(false)}
+          >
             GitHub ↗
           </a>
         </li>
@@ -478,11 +505,6 @@ function Skills() {
 
 // ── CLOUD SVG ─────────────────────────────────────────────────────────────────
 
-/*
-  Each project card has an SVG cloud shape as its background/header decoration.
-  Three interlocked circles form a classic cloud silhouette.
-  The cloud is purely decorative and sits behind the card content.
-*/
 function CloudDecoration({ color }) {
   return (
     <svg
@@ -500,19 +522,12 @@ function CloudDecoration({ color }) {
           </feMerge>
         </filter>
       </defs>
-      {/* base large cloud body */}
       <ellipse cx="170" cy="90" rx="150" ry="38" fill={`${color}18`} />
-      {/* left puff */}
       <circle cx="90"  cy="72" r="42" fill={`${color}18`} />
-      {/* centre puff */}
       <circle cx="170" cy="58" r="54" fill={`${color}1a`} />
-      {/* right puff */}
       <circle cx="255" cy="70" r="44" fill={`${color}18`} />
-      {/* connector between left & centre */}
       <ellipse cx="130" cy="67" rx="28" ry="22" fill={`${color}18`} />
-      {/* connector between centre & right */}
       <ellipse cx="213" cy="65" rx="28" ry="22" fill={`${color}18`} />
-      {/* glowing outline ring on centre puff */}
       <circle
         cx="170" cy="58" r="54"
         fill="none"
@@ -541,9 +556,7 @@ function ProjectCard({ project, index }) {
       onMouseEnter={(e) => (e.currentTarget.style.borderColor = `${project.color}66`)}
       onMouseLeave={(e) => (e.currentTarget.style.borderColor = `${project.color}33`)}
     >
-      {/* Cloud decoration at top of card */}
       <CloudDecoration color={project.color} />
-
       <div className="project-card-header">
         <div style={{ display: "flex", alignItems: "center", gap: ".5rem", flexWrap: "wrap" }}>
           <span
@@ -565,16 +578,13 @@ function ProjectCard({ project, index }) {
         </div>
         <span className="project-period">{project.period}</span>
       </div>
-
       <h3 className="project-title" style={{ color: project.color }}>{project.title}</h3>
       <p className="project-desc">{project.description}</p>
-
       <ul className="project-bullets">
         {project.bullets.map((b) => (
           <li key={b}>{b}</li>
         ))}
       </ul>
-
       <div className="project-footer">
         <div className="project-tech">
           {project.tech.map((t) => (
@@ -663,7 +673,15 @@ function Journey() {
 function Contact() {
   const [copied, setCopied] = useState(false);
   const copyEmail = () => {
-    navigator.clipboard.writeText("thombare.sayali16@gmail.com").catch(() => {});
+    navigator.clipboard.writeText("thombare.sayali16@gmail.com").catch(() => {
+      // Fallback for browsers without clipboard API
+      const el = document.createElement("textarea");
+      el.value = "thombare.sayali16@gmail.com";
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand("copy");
+      document.body.removeChild(el);
+    });
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -681,6 +699,7 @@ function Contact() {
       </AnimatedSection>
       <AnimatedSection delay={100}>
         <div className="contact-card">
+          {/* Email */}
           <button className="contact-item" onClick={copyEmail}>
             <div className="contact-icon" style={{ background: "rgba(0,229,200,.1)" }}>✉</div>
             <div className="contact-info">
@@ -689,6 +708,8 @@ function Contact() {
             </div>
             <span className="contact-action">{copied ? "Copied!" : "Copy"}</span>
           </button>
+
+          {/* Phone */}
           <a className="contact-item" href="tel:+918424823487">
             <div className="contact-icon" style={{ background: "rgba(157,79,255,.1)" }}>📱</div>
             <div className="contact-info">
@@ -697,7 +718,14 @@ function Contact() {
             </div>
             <span className="contact-action">Call</span>
           </a>
-          <a className="contact-item" href="https://linkedin.com/in/sayali-thombare-j3002/" target="_blank" rel="noopener noreferrer">
+
+          {/* LinkedIn */}
+          <a
+            className="contact-item"
+            href="https://linkedin.com/in/sayali-thombare-j3002/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="contact-icon" style={{ background: "rgba(79,195,247,.1)" }}>🔗</div>
             <div className="contact-info">
               <span className="contact-label">LinkedIn</span>
@@ -705,7 +733,14 @@ function Contact() {
             </div>
             <span className="contact-action">Visit</span>
           </a>
-          <a className="contact-item" href="https://github.com/Sayali-JT0003" target="_blank" rel="noopener noreferrer">
+
+          {/* GitHub */}
+          <a
+            className="contact-item"
+            href="https://github.com/Sayali-JT0003"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
             <div className="contact-icon" style={{ background: "rgba(128,255,219,.1)" }}>⌨</div>
             <div className="contact-info">
               <span className="contact-label">GitHub</span>
@@ -713,6 +748,8 @@ function Contact() {
             </div>
             <span className="contact-action">Visit</span>
           </a>
+
+          {/* Location */}
           <div className="contact-item no-hover">
             <div className="contact-icon" style={{ background: "rgba(201,184,255,.1)" }}>📍</div>
             <div className="contact-info">
