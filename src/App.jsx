@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { FaGithub } from "react-icons/fa";
 import "./App.css";
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
@@ -350,7 +351,8 @@ function Navbar() {
             className="nav-github"
             onClick={() => setMenuOpen(false)}
           >
-            GitHub ↗
+            <FaGithub style={{ marginRight: "6px" }} />
+            GitHub
           </a>
         </li>
       </ul>
@@ -721,14 +723,14 @@ function Contact() {
           </button>
 
           {/* Phone */}
-          <a className="contact-item" href="tel:+918424823487">
+          {/* <a className="contact-item" href="tel:+918424823487">
             <div className="contact-icon" style={{ background: "rgba(157,79,255,.1)" }}>📱</div>
             <div className="contact-info">
               <span className="contact-label">Phone</span>
-              <span className="contact-value">+91 8424823487</span>
+              <span className="contact-value">+91 0000000000</span>
             </div>
             <span className="contact-action">Call</span>
-          </a>
+          </a> */}
 
           {/* LinkedIn */}
           <a
@@ -752,7 +754,7 @@ function Contact() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="contact-icon" style={{ background: "rgba(128,255,219,.1)" }}>⌨</div>
+            <div className="contact-icon" style={{ background: "rgba(128,255,219,.1)" }}> <FaGithub /></div>
             <div className="contact-info">
               <span className="contact-label">GitHub</span>
               <span className="contact-value">Sayali-JT0003</span>
@@ -796,6 +798,7 @@ export default function App() {
       <div className="nebula neb2" />
       <div className="nebula neb3" />
       <GlitterLayer />
+      <FaGithub />
       <Navbar />
       <Hero />
       <Skills />
