@@ -773,6 +773,20 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   flex-shrink: 0;
 }
 .contact-item:hover .contact-action { background: rgba(0,229,200,.1); }
+.nav-github,
+.contact-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-github {
+  gap: 6px;
+}
+
+.contact-icon svg {
+  font-size: 18px;
+}
 
 /* ===================== FOOTER ===================== */
 .footer {

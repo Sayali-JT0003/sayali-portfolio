@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { FaGithub } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaPhoneAlt, FaMapMarkerAlt, FaEnvelope } from "react-icons/fa";
 import "./App.css";
 
 // ── DATA ──────────────────────────────────────────────────────────────────────
@@ -714,7 +714,7 @@ function Contact() {
         <div className="contact-card">
           {/* Email */}
           <button className="contact-item" onClick={copyEmail}>
-            <div className="contact-icon" style={{ background: "rgba(0,229,200,.1)" }}>✉</div>
+            <div className="contact-icon" style={{ background: "rgba(0,229,200,.1)" }}><FaEnvelope /></div>
             <div className="contact-info">
               <span className="contact-label">Email</span>
               <span className="contact-value">thombare.sayali16@gmail.com</span>
@@ -724,7 +724,7 @@ function Contact() {
 
           {/* Phone */}
           {/* <a className="contact-item" href="tel:+918424823487">
-            <div className="contact-icon" style={{ background: "rgba(157,79,255,.1)" }}>📱</div>
+            <div className="contact-icon" style={{ background: "rgba(157,79,255,.1)" }}><FaPhoneAlt /></div>
             <div className="contact-info">
               <span className="contact-label">Phone</span>
               <span className="contact-value">+91 0000000000</span>
@@ -739,7 +739,7 @@ function Contact() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            <div className="contact-icon" style={{ background: "rgba(79,195,247,.1)" }}>🔗</div>
+            <div className="contact-icon" style={{ background: "rgba(79,195,247,.1)" }}><FaLinkedin /></div>
             <div className="contact-info">
               <span className="contact-label">LinkedIn</span>
               <span className="contact-value">sayali-thombare-j3002</span>
@@ -764,7 +764,7 @@ function Contact() {
 
           {/* Location */}
           <div className="contact-item no-hover">
-            <div className="contact-icon" style={{ background: "rgba(201,184,255,.1)" }}>📍</div>
+            <div className="contact-icon" style={{ background: "rgba(201,184,255,.1)" }}><FaMapMarkerAlt /></div>
             <div className="contact-info">
               <span className="contact-label">Location</span>
               <span className="contact-value">Navi Mumbai, Maharashtra</span>
