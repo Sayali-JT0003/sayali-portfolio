@@ -158,6 +158,25 @@ const roadmap = [
 ];
 
 // ── HOOKS ─────────────────────────────────────────────────────────────────────
+function useDisableInteractions() {
+  useEffect(() => {
+    const prevent = (e) => e.preventDefault();
+    document.addEventListener("contextmenu", prevent);
+    document.addEventListener("copy", prevent);
+    document.addEventListener("cut", prevent);
+    document.addEventListener("paste", prevent);
+    document.addEventListener("selectstart", prevent);
+    document.addEventListener("dragstart", prevent);
+    return () => {
+      document.removeEventListener("contextmenu", prevent);
+      document.removeEventListener("copy", prevent);
+      document.removeEventListener("cut", prevent);
+      document.removeEventListener("paste", prevent);
+      document.removeEventListener("selectstart", prevent);
+      document.removeEventListener("dragstart", prevent);
+    };
+  }, []);
+}
 
 function useInView(ref, options = {}) {
   const [inView, setInView] = useState(false);
@@ -791,6 +810,7 @@ function Footer() {
 
 export default function App() {
   useMouseSparkle();
+  useDisableInteractions();
   return (
     <>
       <StarCanvas />

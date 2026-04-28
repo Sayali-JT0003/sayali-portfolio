@@ -1005,3 +1005,11 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
     display: block;
   }
 }
+/* ===================== DISABLE SELECTION ===================== */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
